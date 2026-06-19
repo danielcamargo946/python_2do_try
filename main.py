@@ -1,11 +1,14 @@
 from fastapi import FastAPI, HTTPException 
 from modelos.clientes import clientes, clientecrear, ClienteEditar
+from modelos.facturas import Factura
 
 app = FastAPI()
 
 #modelo clientes (clase)
 
 lista_clientes:list[clientes] = []
+lista_facturas: list[Factura] = []
+#lista_transacciones: list[transacciones] = []
 
 #endpoint para todos los clientes
 @app.get("/clientes", response_model=list[clientes])
@@ -43,3 +46,37 @@ async def editar_cliente(cliente_id: int, datos_cliente: ClienteEditar):
             return cliente_val
     raise HTTPException(
         status_code=400, detail=f"el cliente con id {cliente_id}, no existe")
+
+#endpoint para eliminar un cliente 
+@app.delete("/clientes/{cliente_id}", response_model=clientes)
+async def eliminar_cliente(cliente_id: int):
+    for i, obj_cliente in enumerate(lista_clientes):
+        if obj_cliente.id  == cliente_id:
+            cliente_eliminado = lista_clientes.pop(i)
+            return cliente_eliminado
+    raise HTTPException(
+        status_code=400, detail=f"el cliente con id {cliente_id}, no existe")
+
+
+#=========================================================================================================================
+#endpoint para facturas
+
+@app.get("/facturas", response_model=list[Factura])
+async def listar_facturas():
+    return lista_facturas
+
+@app.get("/facturas/{id_factura}", response_model=list[Factura])
+async def listar_facturas(id_factura: int):
+    pass
+
+@app.post("/facturas/{id_factura}", response_model=Factura)
+async def crear_facturas(id_factura: int, datos_factura: Factura):
+    pass  
+
+@app.patch("/facturas/{id_factura}", response_model=Factura)
+async def editar_facturas(id_factura: int, datos_factura: Factura):
+    pass  
+
+@app.delete("/facturas/{id_factura}", response_model=Factura)
+async def eliminar_facturas(id_factura: int, datos_factura: Factura):
+    pass  
