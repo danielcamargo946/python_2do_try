@@ -9,5 +9,8 @@ class FacturaBase(BaseModel):
 class FacturaCrear(FacturaBase):
     pass
 
+class FacturaEditar(FacturaBase):
+    pass
+
 class Factura(FacturaBase):
     id: int | None = None
